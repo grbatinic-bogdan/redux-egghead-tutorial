@@ -12,6 +12,14 @@ interface Reducer<S, A> {
   (state: S, action: A): S;
 }
 
+export interface ReducerAction<T> {
+  type: T;
+}
+
+export interface ReducerPayloadAction<T, U> extends ReducerAction<T> {
+  payload: U;
+}
+
 export const createStore = <S, A>(reducer: Reducer<S, A>): Store<S, A> => {
   let state: S;
   const listeners: SubscribeListener[] = [];

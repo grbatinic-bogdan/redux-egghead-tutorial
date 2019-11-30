@@ -12,7 +12,8 @@
       "jsx": "react",
       "allowSyntheticDefaultImports": true,
       "baseUrl": ".",
-      "rootDir": "."
+      "rootDir": ".",
+      "noFallthroughCasesInSwitch": true
   },
   "include": [
       "./src/**/*",

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { createStore } from 'src/store';
+import { createStore, ReducerAction } from 'src/store';
 import { Counter } from 'src/components/Counter';
 
 // import { createStore } from 'redux';
@@ -11,13 +11,10 @@ if (!app) {
   throw new Error('element not found');
 }
 
-type Actions = 'INCREMENT' | 'DECREMENT';
+// type Actions = 'INCREMENT' | 'DECREMENT';
+type Actions = ReducerAction<'INCREMENT'> | ReducerAction<'DECREMENT'>;
 
-interface ReducerAction<T> {
-  type: T;
-}
-
-const counterReducer = (state = 0, action: ReducerAction<Actions>): number => {
+const counterReducer = (state = 0, action: Actions): number => {
   switch (action.type) {
     case 'INCREMENT':
       return state + 1;
@@ -31,12 +28,19 @@ const counterReducer = (state = 0, action: ReducerAction<Actions>): number => {
 const counterStore = createStore(counterReducer);
 
 const updateDomSubscriber = (): void => {
-  render(<Counter count={counterStore.getState()} />, app);
+  render(
+    <Counter
+      count={counterStore.getState()}
+      onIncrement={() => {
+        counterStore.dispatch({ type: 'INCREMENT' });
+      }}
+      onDecrement={() => {
+        counterStore.dispatch({ type: 'DECREMENT' });
+      }}
+    />,
+    app,
+  );
 };
 
 counterStore.subscribe(updateDomSubscriber);
 updateDomSubscriber();
-
-app.addEventListener('click', () => {
-  counterStore.dispatch({ type: 'INCREMENT' });
-});
