@@ -5,6 +5,7 @@ const ADD_TODO = 'ADD_TODO';
 const TOGGLE_TODO = 'TOGGLE_TODO';
 const REMOVE_TODO = 'REMOVE_TODO';
 
+const SET_FILTER = 'SET_FILTER';
 const SHOW_ALL = 'SHOW_ALL';
 const SHOW_COMPLETED = 'SHOW_COMPLETED';
 const SHOW_ACTIVE = 'SHOW_ACTIVE';
@@ -23,10 +24,8 @@ export type ToggleTodo = ReducerPayloadAction<typeof TOGGLE_TODO, Pick<Todo, 'id
 export type TodoActions = AddTodo | RemoveTodo | ToggleTodo;
 
 export type Filters = 'SHOW_ALL' | 'SHOW_COMPLETED' | 'SHOW_ACTIVE';
-export type FilterActions =
-  | ReducerAction<typeof SHOW_ALL>
-  | ReducerAction<typeof SHOW_COMPLETED>
-  | ReducerAction<typeof SHOW_ACTIVE>;
+export type SetFilter = ReducerPayloadAction<typeof SET_FILTER, Filters>;
+export type FilterActions = SetFilter;
 
 export type TodoAppActions = TodoActions | FilterActions;
 

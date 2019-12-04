@@ -1,6 +1,6 @@
 import expect from 'expect';
 import deepFreeze from 'deep-freeze';
-import { Todo } from 'src/todoReducer/todoReducer';
+import { Todo } from 'src/Todo/types';
 
 const toggleTodo = (todo: Todo): Todo => {
   return {
