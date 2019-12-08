@@ -1,4 +1,14 @@
-import { Todo, TodoActions, TodoAppActions, TodoState, Filters, FilterState, TodosState } from 'src/Todo/types';
+import {
+  Todo,
+  TodoActions,
+  TodoAppActions,
+  TodoState,
+  Filters,
+  FilterState,
+  TodosState,
+  AddTodo,
+  ToggleTodo,
+} from 'src/Todo/types';
 import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
 
@@ -56,3 +66,23 @@ export const store = configureStore({
 export type AppDispatch = typeof store.dispatch;
 
 export type StoreType = typeof store;
+
+export const addTodo = (text: string, id: number): AddTodo => {
+  return {
+    type: 'ADD_TODO',
+    payload: {
+      text,
+      id,
+      completed: false,
+    },
+  };
+};
+
+export const toggleTodo = (id: number): ToggleTodo => {
+  return {
+    type: 'TOGGLE_TODO',
+    payload: {
+      id,
+    },
+  };
+};

@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { AppDispatch } from 'src/Todo';
 import { connect } from 'react-redux';
-import { AddTodo } from 'src/Todo/types';
+import { addTodo } from 'src/Todo/store';
 
-interface AddTodoProps {
-  dispatch: AppDispatch;
+interface AddTodoDispatchProps {
+  addTodo: typeof addTodo;
 }
 
-const TodoFormImpl: React.FunctionComponent<AddTodoProps> = ({ dispatch }) => {
+const TodoFormImpl: React.FunctionComponent<{} & AddTodoDispatchProps> = ({ addTodo }) => {
   const [id, setId] = useState(0);
   const [inputValue, setInputValue] = useState('');
   return (
@@ -15,14 +14,7 @@ const TodoFormImpl: React.FunctionComponent<AddTodoProps> = ({ dispatch }) => {
       onSubmit={(event: React.FormEvent<EventTarget>) => {
         event.preventDefault();
         const nextId = id + 1;
-        dispatch<AddTodo>({
-          type: 'ADD_TODO',
-          payload: {
-            id: nextId,
-            text: inputValue,
-            completed: false,
-          },
-        });
+        addTodo(inputValue, nextId);
         setId(nextId);
         setInputValue('');
       }}
@@ -39,4 +31,4 @@ const TodoFormImpl: React.FunctionComponent<AddTodoProps> = ({ dispatch }) => {
   );
 };
 
-export const TodoForm = connect()(TodoFormImpl);
+export const TodoForm = connect(null, { addTodo })(TodoFormImpl);
