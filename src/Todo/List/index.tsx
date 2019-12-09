@@ -1,4 +1,3 @@
-import React from 'react';
 import { TodosState, Todo, Filters } from 'src/Todo/types';
 import { connect } from 'react-redux';
 import { TodoList } from 'src/Todo/List/TodoList';

@@ -1,61 +1,55 @@
-import {
-  Todo,
-  TodoActions,
-  TodoAppActions,
-  TodoState,
-  Filters,
-  FilterState,
-  TodosState,
-  AddTodo,
-  ToggleTodo,
-} from 'src/Todo/types';
+import { Todo, TodoAppActions, Filters, TodosState, TOGGLE_TODO, ADD_TODO, REMOVE_TODO } from 'src/Todo/types';
 import { combineReducers } from 'redux';
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, createAction, createReducer, PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-export const todoReducer = (state: Todo, action: TodoActions) => {
-  switch (action.type) {
-    case 'ADD_TODO':
+// action creators
+export const addTodo = createAction(ADD_TODO, (text: string, id: number) => {
+  return {
+    payload: {
+      text,
+      id,
+      completed: false,
+    },
+  };
+});
+
+export const toggleTodo = createAction(TOGGLE_TODO, (id: number) => ({
+  payload: {
+    id,
+  },
+}));
+
+export const removeTodo = createAction(REMOVE_TODO, (id: number) => ({
+  payload: {
+    id,
+  },
+}));
+
+export const todoReducer = createReducer({} as Todo, {
+  [addTodo.type]: (_state, action: PayloadAction<Todo>) => action.payload,
+  [toggleTodo.type]: (state: Todo, action: PayloadAction<Todo>) =>
+    state.id === action.payload.id ? { ...state, completed: !state.completed } : state,
+});
+
+export const todosReducer = createReducer([] as Todo[], {
+  [addTodo.type]: (state: Todo[], action: PayloadAction<Todo>) => [...state, todoReducer(undefined, action)],
+  [toggleTodo.type]: (state, action) => state.map(todo => todoReducer(todo, action)),
+  [removeTodo.type]: (state, action) => state.filter(todo => todo.id !== action.payload.id),
+});
+
+export const filterSlice = createSlice({
+  name: 'filter',
+  initialState: 'SHOW_ALL' as Filters,
+  reducers: {
+    setFilter: (state, action: PayloadAction<Filters>) => {
       return action.payload;
-    case 'TOGGLE_TODO':
-      return state.id === action.payload.id ? { ...state, completed: !state.completed } : state;
-    default:
-      return state;
-  }
-};
-
-export const todosReducer = (state: Todo[] = [], action: TodoAppActions): TodoState => {
-  switch (action.type) {
-    case 'ADD_TODO':
-      return [...state, todoReducer((undefined as unknown) as Todo, action)];
-    case 'REMOVE_TODO':
-      return state.filter(todo => todo.id !== action.payload.id);
-    case 'TOGGLE_TODO':
-      return state.map(todoData => todoReducer(todoData, action));
-    default:
-      return state;
-  }
-};
-
-export const filterReducer = (state: Filters = 'SHOW_ALL', action: TodoAppActions): FilterState => {
-  switch (action.type) {
-    case 'SET_FILTER':
-      return action.payload;
-    default:
-      return state;
-  }
-};
-
-// custom root reducer function
-// const todoApp = (state: State = ({} as unknown) as State, action: TodoActions | VisibilityActions): State => {
-//   return {
-//     todos: todosReducer(state.todos, action as TodoActions),
-//     filter: filterReducer(state.filter, action as VisibilityActions),
-//   };
-// };
+    },
+  },
+});
 
 const rootReducer = combineReducers<TodosState, TodoAppActions>({
   todos: todosReducer,
-  filter: filterReducer,
+  filter: filterSlice.reducer,
 });
 
 // export const store = createStore(rootReducer);
@@ -66,23 +60,3 @@ export const store = configureStore({
 export type AppDispatch = typeof store.dispatch;
 
 export type StoreType = typeof store;
-
-export const addTodo = (text: string, id: number): AddTodo => {
-  return {
-    type: 'ADD_TODO',
-    payload: {
-      text,
-      id,
-      completed: false,
-    },
-  };
-};
-
-export const toggleTodo = (id: number): ToggleTodo => {
-  return {
-    type: 'TOGGLE_TODO',
-    payload: {
-      id,
-    },
-  };
-};

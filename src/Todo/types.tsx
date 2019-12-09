@@ -1,14 +1,10 @@
-import { ReducerAction, ReducerPayloadAction } from 'src/store';
+import { ReducerPayloadAction } from 'src/store';
 
 // actions names
-const ADD_TODO = 'ADD_TODO';
-const TOGGLE_TODO = 'TOGGLE_TODO';
-const REMOVE_TODO = 'REMOVE_TODO';
-
-const SET_FILTER = 'SET_FILTER';
-const SHOW_ALL = 'SHOW_ALL';
-const SHOW_COMPLETED = 'SHOW_COMPLETED';
-const SHOW_ACTIVE = 'SHOW_ACTIVE';
+export const ADD_TODO = 'ADD_TODO';
+export const TOGGLE_TODO = 'TOGGLE_TODO';
+export const REMOVE_TODO = 'REMOVE_TODO';
+export const SET_FILTER = 'SET_FILTER';
 
 export interface Todo {
   id: number;
