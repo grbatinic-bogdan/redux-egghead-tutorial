@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { addTodo } from 'src/Todo/store';
+import { todosActions } from 'src/Todo/store';
 
 interface AddTodoDispatchProps {
-  addTodo: typeof addTodo;
+  addTodo: typeof todosActions.addTodo;
 }
 
 const TodoFormImpl: React.FunctionComponent<{} & AddTodoDispatchProps> = ({ addTodo }) => {
@@ -31,4 +31,4 @@ const TodoFormImpl: React.FunctionComponent<{} & AddTodoDispatchProps> = ({ addT
   );
 };
 
-export const TodoForm = connect(null, { addTodo })(TodoFormImpl);
+export const TodoForm = connect(null, { addTodo: todosActions.addTodo })(TodoFormImpl);

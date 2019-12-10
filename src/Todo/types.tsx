@@ -12,10 +12,12 @@ export interface Todo {
   completed: boolean;
 }
 
+export type TodoId = Pick<Todo, 'id'>;
+
 // actions
 export type AddTodo = ReducerPayloadAction<typeof ADD_TODO, Todo>;
-export type RemoveTodo = ReducerPayloadAction<typeof REMOVE_TODO, Pick<Todo, 'id'>>;
-export type ToggleTodo = ReducerPayloadAction<typeof TOGGLE_TODO, Pick<Todo, 'id'>>;
+export type RemoveTodo = ReducerPayloadAction<typeof REMOVE_TODO, TodoId>;
+export type ToggleTodo = ReducerPayloadAction<typeof TOGGLE_TODO, TodoId>;
 
 export type TodoActions = AddTodo | RemoveTodo | ToggleTodo;
 
